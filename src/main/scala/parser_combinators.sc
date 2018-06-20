@@ -44,7 +44,7 @@ case class Obstkiste(kiste: List[Obst]) extends RegexParsers {
   }
 
 
-  def istGefülltMit(obstAnforderung: String): Boolean = {
+  def erfüllt(obstAnforderung: String): Boolean = {
     this.parseAll(this.expr, obstAnforderung).get
   }
 
@@ -53,8 +53,9 @@ case class Obstkiste(kiste: List[Obst]) extends RegexParsers {
 
 val kiste1 = Obstkiste(List(Apfel, Birne))
 
-kiste1.istGefülltMit("apfel ODER birne")
-kiste1.istGefülltMit("apfel UND birne")
-kiste1.istGefülltMit("apfel UND kirsche")
-kiste1.istGefülltMit("apfel ODER kirsche")
-kiste1.istGefülltMit("kirsche ODER ((kirsche UND birne) ODER apfel)")
+kiste1.erfüllt("apfel ODER birne")
+kiste1.erfüllt("apfel UND birne")
+kiste1.erfüllt("apfel UND kirsche")
+kiste1.erfüllt("apfel ODER kirsche")
+kiste1.erfüllt("kirsche(verfault und älter als 10 jahre) ODER (kirsche UND birne) ODER apfel")
+
