@@ -30,7 +30,6 @@ object fileWatcher {
   def props(messageId: String, s3Bucket: String, s3Key: String): Props = Props(new fileWatcher(messageId, S3Location(s3Bucket, s3Key)))
 
 
-
   case class isFileAvailable(requestId: String)
 
   case class fileIsAvailable(requestId: String, location: S3Location)
