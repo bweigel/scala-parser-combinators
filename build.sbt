@@ -11,5 +11,4 @@ libraryDependencies ++= Seq("org.scala-lang.modules" %% "scala-parser-combinator
 libraryDependencies ++= Seq("org.scalactic" %% "scalactic" % "3.0.5",
   "org.scalatest" %% "scalatest" % "3.0.5" % "test")
 
-libraryDependencies ++= Seq("io.atlassian.aws-scala" %% "aws-scala-core" % "7.0.0",
-  "io.atlassian.aws-scala" %% "aws-scala-s3" % "7.0.0")
+libraryDependencies ++= Seq("com.amazonaws" % "aws-java-sdk" % "1.11.357")

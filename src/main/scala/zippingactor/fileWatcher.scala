@@ -3,7 +3,7 @@ package zippingactor
 import akka.actor.{Actor, ActorLogging, Props}
 import zippingactor.types.S3Location
 
-import scala.util.Random
+import zippingactor.s3Util.s3ObjectAccessible
 
 class fileWatcher(messageId: String, fileLocation: S3Location) extends Actor with ActorLogging {
 
@@ -13,14 +13,15 @@ class fileWatcher(messageId: String, fileLocation: S3Location) extends Actor wit
 
   override def postStop(): Unit = log.info(s"fileWatcher ($messageId - $fileLocation) stopped")
 
-  def fileAvailable(): Boolean = Random.nextBoolean()
+  val fileAvailable: () => Boolean = () => s3ObjectAccessible(fileLocation)
 
   override def receive: Receive = {
-    case isFileAvailable(requestId) => if (this.fileAvailable()) {
-      sender() ! fileIsAvailable(requestId, fileLocation)
-    } else {
-      sender() ! fileIsUnavailable(requestId)
-    }
+    case isFileAvailable(requestId) =>
+      if (fileAvailable()) {
+        sender() ! fileIsAvailable(requestId, fileLocation)
+      } else {
+        sender() ! fileIsUnavailable(requestId)
+      }
   }
 }
 

@@ -19,7 +19,7 @@ class fileWatcherTest(_system: ActorSystem) extends TestKit(_system) with Matche
       import fileWatcher._
 
       val probe = TestProbe()
-      val fileWatcherActor = system.actorOf(fileWatcher.props("test", S3Location("bucket", "key")))
+      val fileWatcherActor  = system.actorOf(fileWatcher.props("test", S3Location("bucket", "key")))
 
       fileWatcherActor.tell(isFileAvailable("id-123"), probe.ref)
       val response = probe.expectMsgType[fileIsUnavailable]
