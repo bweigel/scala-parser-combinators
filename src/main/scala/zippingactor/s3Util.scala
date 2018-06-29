@@ -1,12 +1,12 @@
 package zippingactor
 
+import com.amazonaws.services.s3.AmazonS3Client
 import io.atlassian.aws.AmazonClient.S3Client
-import io.atlassian.aws.AmazonClientConnectionDef
+import io.atlassian.aws.{AmazonClient, AmazonClientConnectionDef}
 
 object s3Util {
-  val defaultClient = S3Client
+  val client: AmazonS3Client  = AmazonClient.default(S3Client)
 
-  val config: AmazonClientConnectionDef = AmazonClientConnectionDef.default
-
+  client.
 
 }

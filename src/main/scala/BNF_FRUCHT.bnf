@@ -1,0 +1,29 @@
+<VOLLANFORDERUNG> ::=       <TEILANFORDERUNG> ("UND" <GEKLAMMERTE_TEILANFORDERUNG>)*
+                        |   <TEILANFORDERUNG> ("ODER" <GEKLAMMERTE_TEILANFORDERUNG>)*
+
+<GEKLAMMERTE_TEILANFORDERUNG> ::= "(" <TEILANFORDERUNG> ")"
+
+<TEILANFORDERUNG> ::=       <EINZELANFORDERUNG> ("UND" <EINZELANFORDERUNG>)*
+                        |   <EINZELANFORDERUNG> ("ODER" <EINZELANFORDERUNG>)*
+
+<ZEIT_INTERVAL> ::=         "TAGE"
+
+<ZAHL> ::=      [0-9]*
+<FARBE> ::=       "GRÜN"
+                | "ROT"
+
+<METADATUM_ANFORDERUNG_STATEMENT> ::=       "NICHT ÄLTER ALS" <ZAHL> <ZEIT_INTERVAL>
+                                        |   "FARBE" <FARBE>
+
+<METADATUM_ANFORDERUNG_FLAG> ::=        "VERDORBEN"
+
+<METADATUM_ANFORDERUNG> ::=       <METADATUM_ANFORDERUNG_FLAG>
+                                | <METADATUM_ANFORDERUNG_STATEMENT>
+
+<EINZELANFORDERUNG> ::=     <OBST>
+                        |   <OBST> "(" (<METADATUM_ANFORDERUNG> ",")* <METADATUM_ANFORDERUNG> ")"
+
+<OBST> ::=          "Apfel"
+                |   "Birne"
+                |   "Kirsche"
+                |   ...
