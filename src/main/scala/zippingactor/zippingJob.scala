@@ -1,20 +1,18 @@
 package zippingactor
 
-import java.util.UUID
 
-import akka.actor.{Actor, ActorLogging, ActorRef, PoisonPill, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import zippingactor.fileWatcher.{fileIsAvailable, fileIsUnavailable, isFileAvailable}
 import zippingactor.types.S3Location
 
-import scala.util.Random
 
 object zippingJob {
 
-  def props(jobActorId: String, filesToZip: List[S3Location]): Props = Props(new zippingJob(jobActorId, filesToZip))
+  def props(jobActorId: String, filesToZip: List[S3Location], zipOutputLocation: S3Location): Props = Props(new zippingJob(jobActorId, filesToZip, zipOutputLocation: S3Location))
 
   case class getJobResult(requestId: String)
 
-  case class JobIsDone(requestId: String, s3Location: S3Location)
+  case class JobIsDone(requestId: String, resultS3Location: S3Location)
 
   case class JobIsPending(requestId: String)
 
@@ -28,16 +26,14 @@ class zippingJob(messageId: String, filesToZip: List[S3Location], zipOutputLocat
     file <- filesToZip
   } yield context.actorOf(fileWatcher.props(messageId, file))
 
-  private var filesProcessed: List[S3Location] = Nil
+  private var filesProcessed: Set[S3Location] = Set()
 
-  def allFilesAvailable: Boolean = (for {
-    a <- filesToZip
-  } yield filesProcessed contains a).reduce(_ && _)
+  def allFilesAvailable: Boolean = (filesToZip.toSet diff filesProcessed).isEmpty
 
   var jobIsDone: Boolean = false
 
   def addAvailableFile(file: S3Location): Unit = {
-    filesProcessed = file :: filesProcessed
+    filesProcessed = filesProcessed + file
   }
 
   override def preStart(): Unit = log.info(s"zipping job actor for message $messageId started ...")
