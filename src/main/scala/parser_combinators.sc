@@ -1,10 +1,7 @@
 import scala.util.parsing.combinator.RegexParsers
 
 
-trait Obst {
-  def IN(kiste: List[Obst]): Boolean = kiste.contains(this)
-}
-
+trait Obst
 
 case object Apfel extends Obst
 
@@ -57,5 +54,5 @@ kiste1.erfüllt("apfel ODER birne")
 kiste1.erfüllt("apfel UND birne")
 kiste1.erfüllt("apfel UND kirsche")
 kiste1.erfüllt("apfel ODER kirsche")
-kiste1.erfüllt("kirsche(verfault und älter als 10 jahre) ODER (kirsche UND birne) ODER apfel")
+kiste1.erfüllt("kirsche ODER ((kirsche UND birne) ODER apfel)")
 
